@@ -20,23 +20,25 @@ class Obras:
     obras: list = field(init=False, default_factory=list)
 
     def administar_obra(self):
-        print("Seleccione la opcion que desea realizar")
+        print("En el servicio de Administrar Obra tenemos las siguientes opciones")
+        print("INGRESE LA OPCION QUE DESEA REALIZAR")
         print("1. Agregar Obra")
         print("2. Eliminar Obra")
         print("3. Modificar Obra")
-        print("0. Salir")
+        print("0. Regresar")
         opcion = 1
+        print("\n")
         while opcion != 0:
             opcion = int(input())
             if opcion == 1:
-                print("Ingrese la siguiente informacion")
+                print("INGRESE LA SIGUIENTE INFORMACION")
                 id: int = int(input("ID de la obra: "))
                 nombre: str = input("El nombre de la obra: ")
                 paginas: int = int(input("El numero de paginas: "))
                 autor: Autores = Autores(input("Nombre del autor: "), input("Nacionalidad del autor: "))
                 genero: str = input("El genero: ")
                 precio: int = int(input("Precio: "))
-                cant_libros: int = int(input("Cuantos libros hay de esta obra"))
+                cant_libros: int = int(input("Cuantos libros hay de esta obra: "))
                 self.agregar_obra(id, nombre, paginas, autor, genero, precio, cant_libros)
 
             elif opcion == 2:
@@ -53,7 +55,7 @@ class Obras:
                      cant_libros: int):
         obra = Obras(id, nombre, paginas, autor, genero, precio, cant_libros)
         self.obras.append(obra)
-        return "-La Obra ha sido agregada correctamente-"
+        return "-La Obra ha sido agregada correctamente-\n"
 
     def eliminar_obra(self, id: int):
         for obra in self.obras:
@@ -61,7 +63,7 @@ class Obras:
                 del obra
             else:
                 print("Ingrese el ID de una obra existente")
-        return "-La Obra se elimino correctamente-"
+        return "-La Obra se elimino correctamente-\n"
 
     def modificar_obra(self):
         id = int(input("Ingrese el ID del obra que desea modificar: "))
@@ -85,13 +87,18 @@ class Obras:
         for obra in self.obras:
             if obra.id == id:
                 obra.precio = nv_precio
-        return "-El Precio se ha modificado correctamente-"
+        return "-El Precio se ha modificado correctamente-\n"
 
     def m_cantidad_libros(self, id: int, nv_cantidad: int):
         for obra in self.obras:
             if obra.id == id:
                 obra.cantidad_libros = nv_cantidad
-        return "-La Cantidad de Libros se ha modificado correctamente-"
+        return "-La Cantidad de Libros se ha modificado correctamente-\n"
+
+    def r_cantidad(self, id: int):
+        for obra in self.obras:
+            if obra.id == id:
+                obra.cantidad_libros -= 1
 
 
 @dataclass
@@ -104,18 +111,19 @@ class Usuarios:
     usuarios: list = field(init=False, default_factory=list)
 
     def administrar_usuario(self):
-        print("Seleccione la opcion que desea realizar")
+        print("SELECCIONE LA OPCION QUE DESEA REALIZAR")
         print("1. Agrgar Usuario")
         print("2. Eliminar Usuario")
         print("0. Salir")
         opcion = 1
+        print("\n")
         while opcion != 0:
             if opcion == 1:
                 print("Ingrese la siguiente informacion")
                 documento: str = input("El documento: ")
                 nombre: str = input("El nombre: ")
                 telefono: str = input("El telefono: ")
-                correo: str = input("El correo")
+                correo: str = input("El correo: ")
                 self.agregar_usuario(documento, nombre, telefono, correo)
 
             if opcion == 2:
@@ -128,7 +136,7 @@ class Usuarios:
     def agregar_usuario(self, documento: str, nombre: str, telefono: str, correo: str):
         usuario = Usuarios(documento, nombre, telefono, correo)
         self.usuarios.append(usuario)
-        return "El Usuario ha sido agregado correctamente"
+        return "El Usuario ha sido agregado correctamente\n"
 
     def eliminar_usuario(self, documento: str):
         for usuario in self.usuarios:
@@ -136,4 +144,46 @@ class Usuarios:
                 del usuario
             else:
                 print("-Ingrese el documento de un usuario existente")
-        return "El Usuario ha sido eliminado correctamente"
+        return "El Usuario ha sido eliminado correctamente\n"
+
+    def v_libro(self, documento: str):
+        for usuario in self.usuarios:
+            if usuario.documento == documento:
+                usuario.libro_prestado = True
+
+
+def prestar_libro(self=None):
+    print("Para prestar un libro necesitamos saber la siguiente informacion")
+    documento: str = input("Su documento: ")
+    id: int = int(input("El ID del libro que quiere prestar: "))
+    Obras.r_cantidad(self, id)
+    Usuarios.v_libro(self, documento)
+
+
+obra = Obras(1, "Principito", 200, Autores("Antoine de Saint", "Francia"), "Infantil", 120000, 5)
+
+print("------------")
+print("-BIENVENIDO-")
+print("------------")
+print(
+    "Esta es una aplicacion de una biblioteca en la cual podras hacer uso de nuestros servicios.\nLos servicios con los que contamos en estos momentos son: Administracion de las Obras, Administracion de los Usuarios y Prestar libros.")
+print("Mas adelante agregaremos nuevos servicios.")
+print("------------------------------------------\n")
+opcion = 1
+while opcion != 0:
+    print("=INGRESE EL SERVICIO QUE DESEA UTILIZAR=\n")
+    print("1. Administrar Obra")
+    print("2. Administrar Usuario")
+    print("3. Prestar Libro")
+    print("0. Salir")
+    opcion = int(input())
+    print("\n")
+    if opcion == 1:
+        Obras.administar_obra()
+    elif opcion == 2:
+        Usuarios.administrar_usuario()
+    elif opcion == 3:
+        prestar_libro()
+    else:
+        print("-Ingrese una opcion correcta-")
+        print("-Gracias por utlizar nuestros servicios-\n-Que tenga buen dia-")
