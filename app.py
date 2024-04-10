@@ -95,12 +95,45 @@ class Obras:
 
 
 @dataclass
-class Usuario:
+class Usuarios:
     documento: str
     nombre: str
     telefono: str
     correo: str
     libro_prestado: bool = field(init=False, default=False)
+    usuarios: list = field(init=False, default_factory=list)
 
     def administrar_usuario(self):
-        pass
+        print("Seleccione la opcion que desea realizar")
+        print("1. Agrgar Usuario")
+        print("2. Eliminar Usuario")
+        print("0. Salir")
+        opcion = 1
+        while opcion != 0:
+            if opcion == 1:
+                print("Ingrese la siguiente informacion")
+                documento: str = input("El documento: ")
+                nombre: str = input("El nombre: ")
+                telefono: str = input("El telefono: ")
+                correo: str = input("El correo")
+                self.agregar_usuario(documento, nombre, telefono, correo)
+
+            if opcion == 2:
+                documento: str = input("Ingrese el documento del usuario que desea eliminar: ")
+                self.eliminar_usuario(documento)
+
+            else:
+                print("-Ingrese una opcion correcta")
+
+    def agregar_usuario(self, documento: str, nombre: str, telefono: str, correo: str):
+        usuario = Usuarios(documento, nombre, telefono, correo)
+        self.usuarios.append(usuario)
+        return "El Usuario ha sido agregado correctamente"
+
+    def eliminar_usuario(self, documento: str):
+        for usuario in self.usuarios:
+            if usuario.documento == documento:
+                del usuario
+            else:
+                print("-Ingrese el documento de un usuario existente")
+        return "El Usuario ha sido eliminado correctamente"
