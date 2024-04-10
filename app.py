@@ -101,3 +101,6 @@ class Usuario:
     telefono: str
     correo: str
     libro_prestado: bool = field(init=False, default=False)
+
+    def administrar_usuario(self):
+        pass
