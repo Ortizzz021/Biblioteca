@@ -19,10 +19,7 @@ class Obras:
     calificacion: str = field(init=False)
     obras: list = field(init=False, default_factory=list)
 
-    def __eq__(self, other):
-        if isinstance(other, Obras):
-            return self.id == other.id
-        return False
+
 
     def administar_obra(self):
         opcion = 1
@@ -60,11 +57,10 @@ class Obras:
             else:
                 print("-Ingrese una opcion correcta-")
 
-    def agregar_obra(self, id: int, nombre: str, paginas: int, autor: Autores, genero: str, precio: int,
-                     cant_libros: int):
+    def agregar_obra(self, id: int, nombre: str, paginas: int, autor: Autores, genero: str, precio: int, cant_libros: int):
         obra = Obras(id, nombre, paginas, autor, genero, precio, cant_libros)
         self.obras.append(obra)
-        print("-La Obra ha sido agregada correctamente-\n")
+
 
     def eliminar_obra(self, id: int):
         for obra in self.obras:
@@ -174,29 +170,7 @@ class Usuarios:
             print(usuario.correo)
 
 
-def prestar_libro():
-    print("Para prestar un libro necesitamos saber la siguiente informacion")
-    documento = input("Su documento: ")
-    id_libro = int(input("El ID del libro que quiere prestar: "))
 
-    usuario_encontrado = None
-    for usuario in Usuarios.usuarios:
-        if usuario.documento == documento:
-            usuario_encontrado = usuario
-            break
-
-    obra_encontrada = None
-    for libro in biblioteca.obras:
-        if libro.id == id_libro:
-            obra_encontrada = libro
-            break
-
-    if usuario_encontrado is not None and obra_encontrada is not None:
-        obra_encontrada.cant_libros -= 1
-        usuario_encontrado.libro_prestado = True
-        print("El libro ha sido prestado correctamente.")
-    else:
-        print("No se encontró el usuario o el libro correspondiente.")
 
 obras_iniciales = [
     Obras(1, "Principito", 200, Autores("Antoine de Saint", "Francia"), "Infantil", 120000, 5),
@@ -216,72 +190,6 @@ biblioteca = Obras(0, "", 0, Autores("", ""), "", 0, 0)
 biblioteca.obras.extend(obras_iniciales)
 
 usuario = Usuarios("documento", "nombre", "telefono", "correo")
-
-print("------------")
-print("-BIENVENIDO-")
-print("------------")
-print("Esta es una aplicación de una biblioteca en la cual podrás hacer uso de nuestros servicios.\nLos servicios con los que contamos en estos momentos son: Administración de las Obras, Administración de los Usuarios y Prestar libros.")
-print("Mas adelante agregaremos nuevos servicios.")
-print("------------------------------------------\n")
-
-opcion = 1
-while opcion != 0:
-    print("=INGRESE EL SERVICIO QUE DESEA UTILIZAR=\n")
-    print("1. Administrar Obra")
-    print("2. Administrar Usuario")
-    print("3. Prestar Libro")
-    print("0. Salir")
-    opcion = int(input())
-    print("\n")
-
-    if opcion == 1:
-        biblioteca.administar_obra()
-    elif opcion == 2:
-        usuario.administrar_usuario()
-    elif opcion == 3:
-        prestar_libro()
-    else:
-        print("-Ingrese una opcion correcta-")
-
-    print("-Gracias por utilizar nuestros servicios-\n-Que tenga buen día-")
-
-
-def prestar_libro(self=None):
-    print("Para prestar un libro necesitamos saber la siguiente informacion")
-    documento: str = input("Su documento: ")
-    id: int = int(input("El ID del libro que quiere prestar: "))
-    Obras.r_cantidad(self, id)
-    Usuarios.v_libro(self, documento)
-
-
 obra = Obras(1, "Principito", 200, Autores("Antoine de Saint", "Francia"), "Infantil", 120000, 5)
 usuario = Usuarios("documento", "nombre", "telefono", "correo")
-
-print("------------")
-print("-BIENVENIDO-")
-print("------------")
-print("Esta es una aplicación de una biblioteca en la cual podrás hacer uso de nuestros servicios.\nLos servicios con los que contamos en estos momentos son: Administración de las Obras, Administración de los Usuarios y Prestar libros.")
-print("Mas adelante agregaremos nuevos servicios.")
-print("------------------------------------------\n")
-
-opcion = 1
-while opcion != 0:
-    print("=INGRESE EL SERVICIO QUE DESEA UTILIZAR=\n")
-    print("1. Administrar Obra")
-    print("2. Administrar Usuario")
-    print("3. Prestar Libro")
-    print("0. Salir")
-    opcion = int(input())
-    print("\n")
-
-    if opcion == 1:
-        obra.administar_obra()  # Llama al método desde la instancia de la clase Obras
-    elif opcion == 2:
-        usuario.administrar_usuario()  # Llama al método desde la instancia de la clase Usuarios
-    elif opcion == 3:
-        prestar_libro()  # Llama a la función prestar_libro definida fuera de las clases
-    else:
-        print("-Ingrese una opción correcta-")
-
-print("-Gracias por utilizar nuestros servicios-\n-Que tenga buen día-")
 
