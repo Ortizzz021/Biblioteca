@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 from dataclasses import dataclass, field
 
 @dataclass
@@ -49,29 +49,55 @@ class Obras:
                 str += f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}\n"
         return str
 
+def buscar_obras(works: List[Obras], criterio: str, valor: Any) -> List[Obras]:
+    """Busca obras por diferentes criterios."""
+    result = []
+    for obra in works:
+        if criterio == "precio" and obra.precio == valor:
+            result.append(obra)
+        elif criterio == "genero" and obra.genero.lower() == valor.lower():
+            result.append(obra)
+        elif criterio == "autor" and obra.autor.nombre.lower() == valor.lower():
+            result.append(obra)
+        elif criterio == "paginas" and obra.paginas == valor:
+            result.append(obra)
+        elif criterio == "nombre" and obra.nombre.lower() == valor.lower():
+            result.append(obra)
+    return result
+
 
 @dataclass
 class Usuarios:
-    documento: str
-    nombre: str
-    telefono: str
-    correo: str
-    libro_prestado: bool = field(init=False, default=False)
+    documento: str = ""
+    nombre: str = ""
+    telefono: str = ""
+    correo: str = ""
+    libro_prestado: bool = False
 
     def agregar_usuario(self, documento: str, nombre: str, telefono: str, correo: str):
-        usuario = Usuarios(documento, nombre, telefono, correo)
-        self.usuarios.append(usuario)
+        self.documento = documento
+        self.nombre = nombre
+        self.telefono = telefono
+        self.correo = correo
 
-    def eliminar_usuario(self, documento: str):
-        for usuario in self.usuarios:
-            if usuario.documento == documento:
-                self.usuarios.remove(usuario)
+    def eliminar_usuario(self):
+        self.documento = ""
+        self.nombre = ""
+        self.telefono = ""
+        self.correo = ""
 
     def ver_correos_agregados(self):
-        str = ""
+        if self.correo:
+            return f"El correo de {self.nombre} es {self.correo}\n"
+        else:
+            return ""
+
+
+    def ver_correos_agregados(self):
+        ca = ""
         for usuario in self.usuarios:
-            str += f"El correo de {usuario.nombre} es {usuario.correo}\n"
-        return str
+            ca += f"El correo de {usuario.nombre} es {usuario.correo}\n"
+        return ca
 
 def prestar_libro(documento: str, id_libro: int, obras: List[Obras], usuarios: List[Usuarios]):
     usuario_encontrado = next((usuario for usuario in usuarios if usuario.documento == documento), None)
@@ -81,17 +107,7 @@ def prestar_libro(documento: str, id_libro: int, obras: List[Obras], usuarios: L
         obra_encontrada.cant_libros -= 1
         usuario_encontrado.libro_prestado = True
 
-# Ejemplo de uso:
-if _name_ == "_main_":
-    obra1 = Obras(id=1, nombre="El principito", paginas=100, autor=Autores(nombre="Antoine de Saint-Exupéry", nacionalidad="Francés"), genero="Infantil", precio=10, cant_libros=5)
-    obra2 = Obras(id=2, nombre="Don Quijote de la Mancha", paginas=500, autor=Autores(nombre="Miguel de Cervantes", nacionalidad="Español"), genero="Clásico", precio=15, cant_libros=8)
-    obras_disponibles = [obra1, obra2]
 
-    usuario1 = Usuarios(documento="123456789", nombre="Juan", telefono="123456789", correo="juan@example.com")
-    usuario2 = Usuarios(documento="987654321", nombre="María", telefono="987654321", correo="maria@example.com")
-    usuarios_registrados = [usuario1, usuario2]
-
-    prestar_libro(documento="123456789", id_libro=1, obras=obras_disponibles, usuarios=usuarios_registrados)
 
     for obra in obras_disponibles:
         print(f"ID: {obra.id}, Nombre: {obra.nombre}, Cantidad de libros disponibles: {obra.cant_libros}")

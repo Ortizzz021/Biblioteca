@@ -1,4 +1,4 @@
-from clases import Autores, Obras, Usuarios, prestar_libro
+from clases import Autores, Obras, Usuarios, prestar_libro, buscar_obras
 
 print("------------")
 print("-BIENVENIDO-")
@@ -14,6 +14,7 @@ while opcion != 0:
     print("1. Administrar Obra")
     print("2. Administrar Usuario")
     print("3. Prestar Libro")
+    print("4. Buscar Obras")
     print("0. Salir")
     opcion = int(input())
     print("\n")
@@ -92,21 +93,24 @@ while opcion != 0:
                 nombre = input("Nombre: ")
                 telefono = input("Teléfono: ")
                 correo = input("Correo: ")
-                Usuarios.agregar_usuario(documento, nombre, telefono, correo)
+                # Usuarios.agregar_usuario(documento, nombre, telefono, correo)
                 print("-El Usuario ha sido agregado correctamente-\n")
 
             if opcion_au == 2:
                 documento = input("Ingrese el documento del usuario que desea eliminar: ")
-                Usuarios.eliminar_usuario(documento)
+                # Usuarios.eliminar_usuario(documento)
                 print("-El Usuario ha sido eliminado correctamente-\n")
 
             if opcion_au == 3:
-                print("Correos Agregados:")
-                print(Usuarios.ver_correos_agregados())
-
+                usuarios = Usuarios()
+                correos_registrados = usuarios.ver_correos_agregados()
+                if correos_registrados:
+                    print("Correos Agregados:")
+                    print(correos_registrados)
+                else:
+                    print("No se han agregado correos anteriormente.")
             else:
                 print("-Ingrese una opcion correcta")
-
 
     elif opcion == 3:
         print("Para prestar un libro necesitamos saber la siguiente informacion")
@@ -114,6 +118,41 @@ while opcion != 0:
         id_libro = int(input("El ID del libro que quiere prestar: "))
         prestar_libro(documento, id_libro, biblioteca.obras,[])  # Pasar la lista de obras como argumento a prestar_libro
         print("-El libro ha sido prestado correctamente-")
+
+    elif opcion == 4:
+        print("Buscar Obras")
+        print("1. Por Precio")
+        print("2. Por Género")
+        print("3. Por Autor")
+        print("4. Por Rango de Páginas")
+        print("5. Por Nombre")
+        print("0. Regresar")
+        criterio = int(input("Seleccione el criterio de búsqueda: "))
+        if criterio == 1:
+            valor = int(input("Ingrese el precio a buscar: "))
+        elif criterio == 2 or criterio == 3 or criterio == 5:
+            valor = input("Ingrese el valor a buscar: ")
+        elif criterio == 4:
+            valor = int(input("Ingrese el rango de páginas a buscar: "))
+        else:
+            print("Opción no válida")
+            continue
+
+        if criterio == 4:
+            valor_max = int(input("Ingrese el valor máximo del rango de páginas: "))
+            obras_encontradas = buscar_obras(biblioteca.obras, "paginas", (valor, valor_max))
+        else:
+            criterios = ["", "precio", "genero", "autor", "nombre"]
+            obras_encontradas = buscar_obras(biblioteca.obras, criterios[criterio], valor)
+
+        if obras_encontradas:
+            print("Obras Encontradas:")
+            for obra in obras_encontradas:
+                print(f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}")
+        else:
+            print("No se encontraron obras que coincidan con la búsqueda.")
+
     else:
         print("-Ingrese una opción correcta-")
+
 print("-Gracias por utilizar nuestros servicios-\n-Que tenga buen día-")
