@@ -1,10 +1,10 @@
-from clases import Autores, Obras, Usuarios, prestar_libro
+from Biblioteca.autores import Autores
+from Biblioteca.biblioteca import Biblioteca
 
 print("------------")
 print("-BIENVENIDO-")
 print("------------")
-print(
-    "Esta es una aplicación de una biblioteca en la cual podrás hacer uso de nuestros servicios.\nLos servicios con los que contamos en estos momentos son: Administración de las Obras, Administración de los Usuarios y Prestar libros.")
+print("Esta es una aplicación de una biblioteca en la cual podrás hacer uso de nuestros servicios.\nLos servicios con los que contamos en estos momentos son: Administración de las Obras, Administración de los Usuarios y Prestar libros.")
 print("Mas adelante agregaremos nuevos servicios.")
 print("------------------------------------------\n")
 
@@ -39,12 +39,12 @@ while opcion != 0:
             genero = input("El genero: ")
             precio = int(input("Precio: "))
             cant_libros = int(input("Cuantos libros hay de esta obra: "))
-            Obras.agregar_obra(id, nombre, paginas, autor, genero, precio, cant_libros)
+            Biblioteca.agregar_obra(id, nombre, paginas, autor, genero, precio, cant_libros)
             print("-La Obra ha sido agregada correctamente-\n")
 
         elif opcion_ao == 2:
             id = int(input("Ingrese el ID de la obra que desea eliminar: "))
-            Obras.eliminar_obra(id)
+            Biblioteca.eliminar_obra(id)
             print("-La Obra se eliminó correctamente-\n")
 
         elif opcion_ao == 3:
@@ -59,18 +59,18 @@ while opcion != 0:
                 print("\n")
                 if opcion_mo == 1:
                     nv_precio = int(input("Ingrese el nuevo precio que va a tener la obra: "))
-                    Obras.m_precio(id, nv_precio)
+                    Biblioteca.m_precio(id, nv_precio)
                     print("-El Precio se ha modificado correctamente-\n")
                 elif opcion_mo == 2:
                     nv_cantidad = int(input("Ingrese la nueva cantidad de libros que hay de esa obra: "))
-                    Obras.m_cantidad_libros(id, nv_cantidad)
+                    Biblioteca.m_cantidad_libros(id, nv_cantidad)
                     print("-La Cantidad de Libros se ha modificado correctamente-\n")
                 else:
                     print("-Ingrese una opcion correcta-")
 
         elif opcion_ao == 4:
             print("Obras en Catálogo:")
-            Obras.ver_obras_agregadas()
+            Biblioteca.ver_obras_agregadas()
 
         else:
             print("-Ingrese una opcion correcta-")
@@ -92,17 +92,17 @@ while opcion != 0:
                 nombre = input("Nombre: ")
                 telefono = input("Teléfono: ")
                 correo = input("Correo: ")
-                Usuarios.agregar_usuario(documento, nombre, telefono, correo)
+                Biblioteca.agregar_usuario(documento, nombre, telefono, correo)
                 print("-El Usuario ha sido agregado correctamente-\n")
 
             if opcion_au == 2:
                 documento = input("Ingrese el documento del usuario que desea eliminar: ")
-                Usuarios.eliminar_usuario(documento)
+                Biblioteca.eliminar_usuario(documento)
                 print("-El Usuario ha sido eliminado correctamente-\n")
 
             if opcion_au == 3:
                 print("Correos Agregados:")
-                Usuarios.ver_correos_agregados()
+                Biblioteca.ver_correos_agregados()
 
             else:
                 print("-Ingrese una opcion correcta")
@@ -111,7 +111,7 @@ while opcion != 0:
         print("Para prestar un libro necesitamos saber la siguiente informacion")
         documento = input("Su documento: ")
         id_libro = int(input("El ID del libro que quiere prestar: "))
-        prestar_libro(documento, id_libro)
+        Biblioteca.prestar_libro(documento, id_libro)
         print("-El libro ha sido prestado correctamente-")
 
     else:

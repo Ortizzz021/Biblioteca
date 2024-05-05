@@ -1,32 +1,17 @@
 from dataclasses import dataclass, field
 
-from app import biblioteca
+from Biblioteca.autores import Autores
+from Biblioteca.obras import Obras
+from Biblioteca.usuarios import Usuarios
 
 
 @dataclass
-class Autores:
-    nombre: str
-    nacionalidad: str
-
-
-@dataclass
-class Obras:
-    id: int
-    nombre: str
-    paginas: int
-    autor: Autores
-    genero: str
-    precio: int
-    cant_libros: int
-    calificacion: str = field(init=False)
+class Biblioteca:
     obras: list = field(init=False, default_factory=list)
+    usuarios: list = field(init=False, default_factory=list)
 
-    def __eq__(self, other):
-        if isinstance(other, Obras):
-            return self.id == other.id
-        return False
-
-    def agregar_obra(self, id: int, nombre: str, paginas: int, autor: Autores, genero: str, precio: int, cant_libros: int):
+    def agregar_obra(self, id: int, nombre: str, paginas: int, autor: Autores, genero: str, precio: int,
+                     cant_libros: int):
         obra = Obras(id, nombre, paginas, autor, genero, precio, cant_libros)
         self.obras.append(obra)
 
@@ -52,16 +37,6 @@ class Obras:
                 str += f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}\n"
         return str
 
-
-@dataclass
-class Usuarios:
-    documento: str
-    nombre: str
-    telefono: str
-    correo: str
-    libro_prestado: bool = field(init=False, default=False)
-    usuarios: list = field(init=False, default_factory=list)
-
     def agregar_usuario(self, documento: str, nombre: str, telefono: str, correo: str):
         usuario = Usuarios(documento, nombre, telefono, correo)
         self.usuarios.append(usuario)
@@ -77,18 +52,18 @@ class Usuarios:
             str += f"El correo de {usuario.nombre} es {usuario.correo}\n"
         return str
 
+    def prestar_libro(self, documento: str, id_libro: int):
+        usuario_encontrado = None
+        for usuario in self.usuarios:
+            if usuario.documento == documento:
+                usuario_encontrado = usuario
 
-def prestar_libro(documento: str, id_libro: int):
-    usuario_encontrado = None
-    for usuario in Usuarios.usuarios:
-        if usuario.documento == documento:
-            usuario_encontrado = usuario
+        obra_encontrada = None
+        for obra in self.obras:
+            if obra.id == id_libro:
+                obra_encontrada = obra
 
-    obra_encontrada = None
-    for libro in biblioteca.obras:
-        if libro.id == id_libro:
-            obra_encontrada = libro
-
-    if usuario_encontrado is not None and obra_encontrada is not None:
-        obra_encontrada.cant_libros -= 1
-        usuario_encontrado.libro_prestado = True
+        if usuario_encontrado is not None and obra_encontrada is not None:
+            obra_encontrada.cant_libros -= 1
+            obra_encontrada.disponible = False
+            usuario_encontrado.libros_prestados += 1
