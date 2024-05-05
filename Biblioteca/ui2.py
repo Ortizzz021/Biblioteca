@@ -1,4 +1,4 @@
-from clases import Autores, Obras, Usuarios, prestar_libro, buscar_obras
+from biblioteca import Autores, Obras, Usuarios, prestar_libro, buscar_obras
 
 print("------------")
 print("-BIENVENIDO-")

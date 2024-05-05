@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import List, Any
 
 from Biblioteca.autores import Autores
 from Biblioteca.obras import Obras
@@ -52,11 +53,27 @@ class Biblioteca:
             str += f"El correo de {usuario.nombre} es {usuario.correo}\n"
         return str
 
-    def prestar_libro(self, documento: str, id_libro: int):
-        usuario_encontrado = None
-        for usuario in self.usuarios:
-            if usuario.documento == documento:
-                usuario_encontrado = usuario
+def buscar_obras(works: List[Obras], criterio: str, valor: Any) -> List[Obras]:
+    """Busca obras por diferentes criterios."""
+    result = []
+    for obra in works:
+        if criterio == "precio" and obra.precio == valor:
+            result.append(obra)
+        elif criterio == "genero" and obra.genero.lower() == valor.lower():
+            result.append(obra)
+        elif criterio == "autor" and obra.autor.nombre.lower() == valor.lower():
+            result.append(obra)
+        elif criterio == "paginas" and obra.paginas == valor:
+            result.append(obra)
+        elif criterio == "nombre" and obra.nombre.lower() == valor.lower():
+            result.append(obra)
+    return result
+
+def prestar_libro(self, documento: str, id_libro: int):
+    usuario_encontrado = None
+    for usuario in self.usuarios:
+        if usuario.documento == documento:
+            usuario_encontrado = usuario
 
         obra_encontrada = None
         for obra in self.obras:
