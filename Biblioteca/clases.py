@@ -1,3 +1,5 @@
+# clases.py
+
 from typing import List, Any
 from dataclasses import dataclass, field
 
@@ -15,7 +17,8 @@ class Obras:
     genero: str
     precio: int
     cant_libros: int
-    calificacion: str = field(init=False)
+    calificacion_total: float = field(default=0.0)
+    calificaciones_count: int = field(default=0)
     obras: list = field(init=False, default_factory=list)
 
     def _eq_(self, other):
@@ -43,11 +46,24 @@ class Obras:
                 obra.cant_libros = nv_cantidad
 
     def ver_obras_agregadas(self) -> str:
-        str = ""
+        str_result = ""
         if self.obras:
             for obra in self.obras:
-                str += f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}\n"
-        return str
+                str_result += f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}\n"
+        return str_result
+
+    def calificar_obra(self, calificacion: float):
+        """Califica una obra."""
+        if 0 <= calificacion <= 10:  # Asumiendo que las calificaciones están en un rango de 0 a 10
+            self.calificacion_total += calificacion
+            self.calificaciones_count += 1
+
+    def calcular_promedio_calificacion(self) -> float:
+        """Calcula el promedio de calificación de la obra."""
+        if self.calificaciones_count > 0:
+            return self.calificacion_total / self.calificaciones_count
+        else:
+            return 0.0
 
 def buscar_obras(works: List[Obras], criterio: str, valor: Any) -> List[Obras]:
     """Busca obras por diferentes criterios."""
@@ -93,12 +109,6 @@ class Usuarios:
             return ""
 
 
-    def ver_correos_agregados(self):
-        ca = ""
-        for usuario in self.usuarios:
-            ca += f"El correo de {usuario.nombre} es {usuario.correo}\n"
-        return ca
-
 def prestar_libro(documento: str, id_libro: int, obras: List[Obras], usuarios: List[Usuarios]):
     usuario_encontrado = next((usuario for usuario in usuarios if usuario.documento == documento), None)
     obra_encontrada = next((obra for obra in obras if obra.id == id_libro), None)
@@ -107,10 +117,12 @@ def prestar_libro(documento: str, id_libro: int, obras: List[Obras], usuarios: L
         obra_encontrada.cant_libros -= 1
         usuario_encontrado.libro_prestado = True
 
+        print("Obras Disponibles:")
+        for obra in obras:  # Iteramos sobre todas las obras disponibles
+            print(f"ID: {obra.id}, Nombre: {obra.nombre}, Cantidad de libros disponibles: {obra.cant_libros}")
 
+        for usuario in usuarios:  # Iteramos sobre todos los usuarios registrados
+            print(f"Usuario: {usuario.nombre}, Libro prestado: {usuario.libro_prestado}")
+    else:
+        print("El usuario o la obra no fueron encontrados.")
 
-    for obra in obras_disponibles:
-        print(f"ID: {obra.id}, Nombre: {obra.nombre}, Cantidad de libros disponibles: {obra.cant_libros}")
-
-    for usuario in usuarios_registrados:
-        print(f"Usuario: {usuario.nombre}, Libro prestado: {usuario.libro_prestado}")
