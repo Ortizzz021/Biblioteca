@@ -1,5 +1,3 @@
-# ui2.py
-
 from clases import Autores, Obras, Usuarios, prestar_libro, buscar_obras
 
 print("------------")
@@ -17,7 +15,6 @@ while opcion != 0:
     print("2. Administrar Usuario")
     print("3. Prestar Libro")
     print("4. Buscar Obras")
-    print("5. Calificar Obra")
     print("0. Salir")
     opcion = int(input())
     print("\n")
@@ -119,7 +116,7 @@ while opcion != 0:
         print("Para prestar un libro necesitamos saber la siguiente informacion")
         documento = input("Su documento: ")
         id_libro = int(input("El ID del libro que quiere prestar: "))
-        prestar_libro(documento, id_libro, biblioteca.obras, [])  # Pasar la lista de obras como argumento a prestar_libro
+        prestar_libro(documento, id_libro, biblioteca.obras,[])  # Pasar la lista de obras como argumento a prestar_libro
         print("-El libro ha sido prestado correctamente-")
 
     elif opcion == 4:
@@ -155,19 +152,9 @@ while opcion != 0:
         else:
             print("No se encontraron obras que coincidan con la búsqueda.")
 
-    elif opcion == 5:
-        id_obracalif = int(input("Ingrese el ID de la obra que desea calificar: "))
-        calificacion = float(input("Ingrese la calificación de la obra (de 0 a 10): "))
-        obra_calificar = next((obra for obra in biblioteca.obras if obra.id == id_obracalif), None)
-        if obra_calificar:
-            obra_calificar.calificar_obra(calificacion)
-            print("La obra ha sido calificada correctamente.")
-            print(f"El promedio de calificación de la obra {obra_calificar.nombre} es: {obra_calificar.calcular_promedio_calificacion():.2f}")
-        else:
-            print("La obra no fue encontrada.")
-
     else:
         print("-Ingrese una opción correcta-")
 
 print("-Gracias por utilizar nuestros servicios-\n-Que tenga buen día-")
+
 

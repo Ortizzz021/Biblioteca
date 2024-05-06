@@ -14,6 +14,8 @@ class Obras:
     cant_libros: int
     calificacion: str = field(init=False)
     disponible: bool = field(init=False, default=True)
+    calificacion_total: float = field(default=0.0)
+    calificaciones_count: int = field(default=0)
 
 
     def __eq__(self, other):

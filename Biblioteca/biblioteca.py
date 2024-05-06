@@ -53,34 +53,47 @@ class Biblioteca:
             str += f"El correo de {usuario.nombre} es {usuario.correo}\n"
         return str
 
-def buscar_obras(works: List[Obras], criterio: str, valor: Any) -> List[Obras]:
-    """Busca obras por diferentes criterios."""
-    result = []
-    for obra in works:
-        if criterio == "precio" and obra.precio == valor:
-            result.append(obra)
-        elif criterio == "genero" and obra.genero.lower() == valor.lower():
-            result.append(obra)
-        elif criterio == "autor" and obra.autor.nombre.lower() == valor.lower():
-            result.append(obra)
-        elif criterio == "paginas" and obra.paginas == valor:
-            result.append(obra)
-        elif criterio == "nombre" and obra.nombre.lower() == valor.lower():
-            result.append(obra)
-    return result
+    def buscar_obras(self, words: List[Obras], criterio: str, valor: Any) -> List[Obras]:
+        """Busca obras por diferentes criterios."""
+        result = []
+        for obra in words:
+            if criterio == "precio" and obra.precio == valor:
+                result.append(obra)
+            elif criterio == "genero" and obra.genero.lower() == valor.lower():
+                result.append(obra)
+            elif criterio == "autor" and obra.autor.nombre.lower() == valor.lower():
+                result.append(obra)
+            elif criterio == "paginas" and obra.paginas == valor:
+                result.append(obra)
+            elif criterio == "nombre" and obra.nombre.lower() == valor.lower():
+                result.append(obra)
+        return result
 
-def prestar_libro(self, documento: str, id_libro: int):
-    usuario_encontrado = None
-    for usuario in self.usuarios:
-        if usuario.documento == documento:
-            usuario_encontrado = usuario
+    def prestar_libro(self, documento: str, id_libro: int):
+        usuario_encontrado = None
+        for usuario in self.usuarios:
+            if usuario.documento == documento:
+                usuario_encontrado = usuario
 
-        obra_encontrada = None
-        for obra in self.obras:
-            if obra.id == id_libro:
-                obra_encontrada = obra
+            obra_encontrada = None
+            for obra in self.obras:
+                if obra.id == id_libro:
+                    obra_encontrada = obra
 
-        if usuario_encontrado is not None and obra_encontrada is not None:
-            obra_encontrada.cant_libros -= 1
-            obra_encontrada.disponible = False
-            usuario_encontrado.libros_prestados += 1
+            if usuario_encontrado is not None and obra_encontrada is not None:
+                obra_encontrada.cant_libros -= 1
+                obra_encontrada.disponible = False
+                usuario_encontrado.libros_prestados += 1
+
+    def calificar_obra(self, calificacion: float):
+        """Califica una obra."""
+        if 0 <= calificacion <= 10:  # Asumiendo que las calificaciones están en un rango de 0 a 10
+            Obras.calificacion_total += calificacion
+            Obras.calificaciones_count += 1
+
+    def calcular_promedio_calificacion(self) -> float:
+        """Calcula el promedio de calificación de la obra."""
+        if Obras.calificaciones_count > 0:
+            return Obras.calificacion_total / Obras.calificaciones_count
+        else:
+            return 0.0
