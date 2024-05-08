@@ -2,6 +2,6 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Autores:
+class Autor:
     nombre: str
     nacionalidad: str

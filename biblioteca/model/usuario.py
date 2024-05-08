@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 @dataclass
-class Usuarios:
+class Usuario:
         documento: str
         nombre: str
         telefono: str

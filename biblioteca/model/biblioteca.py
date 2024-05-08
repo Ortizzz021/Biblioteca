@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
-from typing import List, Any
+from typing import Any
 
-from Biblioteca.autores import Autores
-from Biblioteca.obras import Obras
-from Biblioteca.usuarios import Usuarios
+from biblioteca.model.autor import Autor
+from biblioteca.model.obra import Obra
+from biblioteca.model.usuario import Usuario
 
 
 @dataclass
@@ -11,9 +11,9 @@ class Biblioteca:
     obras: list = field(init=False, default_factory=list)
     usuarios: list = field(init=False, default_factory=list)
 
-    def agregar_obra(self, id: int, nombre: str, paginas: int, autor: Autores, genero: str, precio: int,
+    def agregar_obra(self, id: int, nombre: str, paginas: int, autor: Autor, genero: str, precio: int,
                      cant_libros: int):
-        obra = Obras(id, nombre, paginas, autor, genero, precio, cant_libros)
+        obra = Obra(id, nombre, paginas, autor, genero, precio, cant_libros)
         self.obras.append(obra)
 
     def eliminar_obra(self, id: int):
@@ -39,7 +39,7 @@ class Biblioteca:
         return str
 
     def agregar_usuario(self, documento: str, nombre: str, telefono: str, correo: str):
-        usuario = Usuarios(documento, nombre, telefono, correo)
+        usuario = Usuario(documento, nombre, telefono, correo)
         self.usuarios.append(usuario)
 
     def eliminar_usuario(self, documento: str):
@@ -53,7 +53,7 @@ class Biblioteca:
             str += f"El correo de {usuario.nombre} es {usuario.correo}\n"
         return str
 
-    def buscar_obras(self, words: List[Obras], criterio: str, valor: Any) -> List[Obras]:
+    def buscar_obras(self, words: list[Obra], criterio: str, valor: Any) -> list[Obra]:
         """Busca obras por diferentes criterios."""
         result = []
         for obra in words:
@@ -88,12 +88,12 @@ class Biblioteca:
     def calificar_obra(self, calificacion: float):
         """Califica una obra."""
         if 0 <= calificacion <= 10:  # Asumiendo que las calificaciones están en un rango de 0 a 10
-            Obras.calificacion_total += calificacion
-            Obras.calificaciones_count += 1
+            Obra.calificacion_total += calificacion
+            Obra.calificaciones_count += 1
 
     def calcular_promedio_calificacion(self) -> float:
         """Calcula el promedio de calificación de la obra."""
-        if Obras.calificaciones_count > 0:
-            return Obras.calificacion_total / Obras.calificaciones_count
+        if Obra.calificaciones_count > 0:
+            return Obra.calificacion_total / Obra.calificaciones_count
         else:
             return 0.0

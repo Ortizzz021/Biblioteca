@@ -1,14 +1,14 @@
 from dataclasses import dataclass, field
 
-from Biblioteca.autores import Autores
+from biblioteca.model.autor import Autor
 
 
 @dataclass
-class Obras:
+class Obra:
     id: int
     nombre: str
     paginas: int
-    autor: Autores
+    autor: Autor
     genero: str
     precio: int
     cant_libros: int
@@ -19,6 +19,6 @@ class Obras:
 
 
     def __eq__(self, other):
-        if isinstance(other, Obras):
+        if isinstance(other, Obra):
             return self.id == other.id
         return False

@@ -5,14 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c89586df-3fad-47e0-9f63-abb7a5094b07" name="Changes" comment="codigo momentaneo">
-      <change afterPath="$PROJECT_DIR$/Biblioteca/puth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Biblioteca/model/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Biblioteca/view/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/Biblioteca.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Biblioteca.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Biblioteca/biblioteca.py" beforeDir="false" afterPath="$PROJECT_DIR$/Biblioteca/biblioteca.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Biblioteca/clases.py" beforeDir="false" afterPath="$PROJECT_DIR$/Biblioteca/clases.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Biblioteca/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/Biblioteca/ui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Biblioteca/ui2.py" beforeDir="false" afterPath="$PROJECT_DIR$/Biblioteca/ui2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Biblioteca/autores.py" beforeDir="false" afterPath="$PROJECT_DIR$/Biblioteca/model/autores.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Biblioteca/biblioteca.py" beforeDir="false" afterPath="$PROJECT_DIR$/Biblioteca/model/biblioteca.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Biblioteca/obras.py" beforeDir="false" afterPath="$PROJECT_DIR$/Biblioteca/model/obras.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Biblioteca/puth.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Biblioteca/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/Biblioteca/view/ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Biblioteca/usuarios.py" beforeDir="false" afterPath="$PROJECT_DIR$/Biblioteca/model/usuarios.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +34,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Ortizzz021"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Ortizzz021/Biblioteca.git",
+    "accountId": "69c30c7b-0c14-4d7e-85c4-8f9cbb8d306e"
+  }
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -76,7 +93,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Biblioteca/biblioteca.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\NORA\PycharmProjects\Biblioteca\Biblioteca\model\biblioteca.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -120,7 +137,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Biblioteca/obras.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\NORA\PycharmProjects\Biblioteca\Biblioteca\model\obras.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -142,7 +159,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Biblioteca/ui.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\NORA\PycharmProjects\Biblioteca\Biblioteca\view\ui.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
