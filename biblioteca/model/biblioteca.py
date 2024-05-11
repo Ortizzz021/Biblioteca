@@ -32,11 +32,20 @@ class Biblioteca:
                 obra.cant_libros = nv_cantidad
 
     def ver_obras_agregadas(self) -> str:
-        str = ""
+        result = ""
         if self.obras:
             for obra in self.obras:
-                str += f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}\n"
-        return str
+                prestado = "Sí" if not obra.disponible else "No"
+                if not obra.disponible:
+                    usuario_prestamo = next(
+                        (usuario for usuario in self.usuarios if usuario.documento == obra.usuario_prestamo), None)
+                    correo_prestamo = f" ({usuario_prestamo.correo})" if usuario_prestamo else ""
+                else:
+                    correo_prestamo = ""
+                result += f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}, Prestado: {prestado}{correo_prestamo}\n"
+        else:
+            result += "No hay obras agregadas"
+        return result
 
     def agregar_usuario(self, documento: str, nombre: str, telefono: str, correo: str):
         usuario = Usuario(documento, nombre, telefono, correo)
@@ -87,7 +96,7 @@ class Biblioteca:
 
     def calificar_obra(self, calificacion: float):
         """Califica una obra."""
-        if 0 <= calificacion <= 10:  # Asumiendo que las calificaciones están en un rango de 0 a 10
+        if 0 <= calificacion <= 10:
             Obra.calificacion_total += calificacion
             Obra.calificaciones_count += 1
 

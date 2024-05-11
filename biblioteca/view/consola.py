@@ -74,7 +74,7 @@ while opcion != 0:
                         print("-Ingrese una opcion correcta-")
 
             elif opcion_ao == 4:
-                print("Obras en Catálogo:")
+                print("Obras en Catálogo:", biblioteca.ver_obras_agregadas())
                 biblioteca.ver_obras_agregadas()
 
             else:
