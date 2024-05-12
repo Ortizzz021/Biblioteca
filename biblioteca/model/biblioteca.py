@@ -5,7 +5,6 @@ from biblioteca.model.autor import Autor
 from biblioteca.model.obra import Obra
 from biblioteca.model.usuario import Usuario
 
-
 @dataclass
 class Biblioteca:
     obras: list = field(init=False, default_factory=list)

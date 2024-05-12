@@ -3,26 +3,38 @@ from tkinter import messagebox
 from biblioteca.model.autor import Autor
 from biblioteca.model.biblioteca import Biblioteca
 
+
 class BibliotecaApp(tk.Tk):
+    title_font = ("Arial", 18)
+    label_font = ("Arial", 12)
+    button_bg = "#3B496F"
+    button_fg = "#FFFFFF"
+
     def __init__(self):
         super().__init__()
         self.title("Aplicación de Biblioteca")
         self.geometry("600x400")
         self.biblioteca = Biblioteca()
-
         self.menu_principal()
+        self.configure(bg="#FFFFFF")
 
     def menu_principal(self):
         self.clear_window()
 
-        tk.Label(self, text="BIENVENIDO", font=("Arial", 18)).pack(pady=20)
+        tk.Label(self, text="BIENVENIDO", font=self.title_font, bg="#FFFFFF").pack(pady=20)
 
-        tk.Button(self, text="Administrar Obra", command=self.administrar_obras).pack(pady=10)
-        tk.Button(self, text="Administrar Usuario", command=self.administrar_usuarios).pack(pady=10)
-        tk.Button(self, text="Prestar Libro", command=self.prestar_libro).pack(pady=10)
-        tk.Button(self, text="Buscar Obras", command=self.buscar_obras).pack(pady=10)
-        tk.Button(self, text="Calificar Obra", command=self.calificar_obra).pack(pady=10)
-        tk.Button(self, text="Salir", command=self.destroy).pack(pady=10)
+        tk.Button(self, text="Administrar Obra", command=self.administrar_obras,
+                  font=self.label_font, bg=self.button_bg, fg=self.button_fg).pack(pady=10)
+        tk.Button(self, text="Administrar Usuario", command=self.administrar_usuarios,
+                  font=self.label_font, bg=self.button_bg, fg=self.button_fg).pack(pady=10)
+        tk.Button(self, text="Prestar Libro", command=self.prestar_libro,
+                  font=self.label_font, bg=self.button_bg, fg=self.button_fg).pack(pady=10)
+        tk.Button(self, text="Buscar Obras", command=self.buscar_obras,
+                  font=self.label_font, bg=self.button_bg, fg=self.button_fg).pack(pady=10)
+        tk.Button(self, text="Calificar Obra", command=self.calificar_obra,
+                  font=self.label_font, bg=self.button_bg, fg=self.button_fg).pack(pady=10)
+        tk.Button(self, text="Salir", command=self.destroy,
+                  font=self.label_font, bg=self.button_bg, fg=self.button_fg).pack(pady=10)
 
     def administrar_obras(self):
         self.clear_window()
@@ -50,22 +62,36 @@ class BibliotecaApp(tk.Tk):
 
         tk.Label(self, text="Prestar Libro", font=("Arial", 16)).pack(pady=10)
 
-        tk.Label(self, text="Documento del usuario: ").pack()
-        documento_entry = tk.Entry(self)
-        documento_entry.pack()
+        tk.Label(self, text="Seleccione el usuario: ").pack()
+        usuario_var = tk.StringVar(self)
+        usuarios_registrados = [usuario.nombre for usuario in self.biblioteca.usuarios]
+        usuario_menu = tk.OptionMenu(self, usuario_var, *usuarios_registrados)
+        usuario_menu.pack()
 
-        tk.Label(self, text="ID del libro: ").pack()
-        id_libro_entry = tk.Entry(self)
-        id_libro_entry.pack()
+        tk.Label(self, text="Seleccione la obra disponible: ").pack()
+        obra_var = tk.StringVar(self)
+        obras_disponibles = [obra.nombre for obra in self.biblioteca.obras if obra.disponible]
+        obra_menu = tk.OptionMenu(self, obra_var, *obras_disponibles)
+        obra_menu.pack()
 
-        def prestar():
-            documento = documento_entry.get()
-            id_libro = int(id_libro_entry.get())
-            self.biblioteca.prestar_libro(documento, id_libro)
-            messagebox.showinfo("Éxito", "El libro ha sido prestado correctamente.")
-            self.menu_principal()
+        def prestar(usuario_var=usuario_var, obra_var=obra_var):
+            usuario_seleccionado = usuario_var.get()
+            obra_seleccionada = obra_var.get()
+
+            usuario = next((usuario for usuario in self.biblioteca.usuarios if usuario.nombre == usuario_seleccionado),
+                           None)
+            obra = next((obra for obra in self.biblioteca.obras if obra.nombre == obra_seleccionada), None)
+
+            if usuario is not None and obra is not None:
+                self.biblioteca.prestar_libro(usuario.documento, obra.id)
+                messagebox.showinfo("Éxito", "El libro ha sido prestado correctamente.")
+                self.menu_principal()
+            else:
+                messagebox.showerror("Error", "Por favor, selecciona un usuario y una obra válidos.")
 
         tk.Button(self, text="Prestar", command=prestar).pack(pady=10)
+        tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
+
 
     def buscar_obras(self):
         self.clear_window()
@@ -176,16 +202,20 @@ class BibliotecaApp(tk.Tk):
         cant_libros_entry.pack()
 
         def agregar():
-            id = int(id_entry.get())
-            nombre = nombre_entry.get()
-            paginas = int(paginas_entry.get())
-            autor = Autor(autor_nombre_entry.get(), autor_nacionalidad_entry.get())
-            genero = genero_var.get()
-            precio = int(precio_entry.get())
-            cant_libros = int(cant_libros_entry.get())
-            self.biblioteca.agregar_obra(id, nombre, paginas, autor, genero, precio, cant_libros)
-            messagebox.showinfo("Éxito", "La obra ha sido agregada correctamente.")
-            self.menu_principal()
+            try:
+                id = int(id_entry.get())
+                nombre = nombre_entry.get()
+                paginas = int(paginas_entry.get())
+                autor = Autor(autor_nombre_entry.get(), autor_nacionalidad_entry.get())
+                genero = genero_var.get()
+                precio = int(precio_entry.get())
+                cant_libros = int(cant_libros_entry.get())
+                self.biblioteca.agregar_obra(id, nombre, paginas, autor, genero, precio, cant_libros)
+                messagebox.showinfo("Éxito", "La obra ha sido agregada correctamente.")
+                self.menu_principal()
+            except ValueError:
+                messagebox.showerror("Error",
+                                     "Por favor, asegúrate de ingresar números enteros en los campos correspondientes.")
 
         tk.Button(self, text="Agregar", command=agregar).pack(pady=10)
 
