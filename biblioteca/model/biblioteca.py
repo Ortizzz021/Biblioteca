@@ -61,20 +61,33 @@ class Biblioteca:
             str += f"El correo de {usuario.nombre} es {usuario.correo}\n"
         return str
 
-    def buscar_obras(self, words: list[Obra], criterio: str, valor: Any) -> list[Obra]:
+    def buscar_obras(self, criterio: str, valor: Any) -> list[Obra]:
         """Busca obras por diferentes criterios."""
         result = []
-        for obra in words:
-            if criterio == "precio" and obra.precio == valor:
-                result.append(obra)
-            elif criterio == "genero" and obra.genero.lower() == valor.lower():
-                result.append(obra)
-            elif criterio == "autor" and obra.autor.nombre.lower() == valor.lower():
-                result.append(obra)
-            elif criterio == "paginas" and obra.paginas == valor:
-                result.append(obra)
-            elif criterio == "nombre" and obra.nombre.lower() == valor.lower():
-                result.append(obra)
+        if criterio == "precio":
+            if valor == "Menos de 100.000":
+                result = [obra for obra in self.obras if obra.precio < 100000]
+            elif valor == "100.000 - 200.000":
+                result = [obra for obra in self.obras if 100000 <= obra.precio < 200000]
+            elif valor == "200.000 - 300.000":
+                result = [obra for obra in self.obras if 200000 <= obra.precio < 300000]
+            elif valor == "Más de 300.000":
+                result = [obra for obra in self.obras if obra.precio >= 300000]
+        elif criterio == "genero":
+            result = [obra for obra in self.obras if obra.genero.lower() == valor.lower()]
+        elif criterio == "autor":
+            result = [obra for obra in self.obras if obra.autor.nombre.lower() == valor.lower()]
+        elif criterio == "paginas":
+            if valor == "Menos de 50":
+                result = [obra for obra in self.obras if obra.paginas < 50]
+            elif valor == "50 - 100":
+                result = [obra for obra in self.obras if 50 <= obra.paginas < 100]
+            elif valor == "100 - 150":
+                result = [obra for obra in self.obras if 100 <= obra.paginas < 150]
+            elif valor == "Más de 150":
+                result = [obra for obra in self.obras if obra.paginas >= 150]
+        elif criterio == "nombre":
+            result = [obra for obra in self.obras if obra.nombre.lower() == valor.lower()]
         return result
 
     def prestar_libro(self, documento: str, id_libro: int):
@@ -105,3 +118,11 @@ class Biblioteca:
             return Obra.calificacion_total / Obra.calificaciones_count
         else:
             return 0.0
+
+    def agregar_obras_predeterminadas(self):
+
+        obra1 = (Biblioteca, 1, "El principito", 120, "Saint_Exupery", "Ficción", 120000, 3)
+        obra2 = (Biblioteca, 2, "El priipito", 120, "Saint_Exupery", "Ficción", 120000, 3)
+
+        self.agregar_obra(obra1)
+        self.agregar_obra(obra2)

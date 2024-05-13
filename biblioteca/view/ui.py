@@ -1,7 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
+
+from biblioteca.model import biblioteca, obra
 from biblioteca.model.autor import Autor
 from biblioteca.model.biblioteca import Biblioteca
+
 
 
 class BibliotecaApp(tk.Tk):
@@ -14,9 +17,10 @@ class BibliotecaApp(tk.Tk):
         super().__init__()
         self.title("Aplicación de Biblioteca")
         self.geometry("600x400")
-        self.biblioteca = Biblioteca()
-        self.menu_principal()
         self.configure(bg="#FFFFFF")
+        self.menu_principal()
+
+
 
     def menu_principal(self):
         self.clear_window()
@@ -92,42 +96,90 @@ class BibliotecaApp(tk.Tk):
         tk.Button(self, text="Prestar", command=prestar).pack(pady=10)
         tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
 
-
     def buscar_obras(self):
         self.clear_window()
 
         tk.Label(self, text="Buscar Obras", font=("Arial", 16)).pack(pady=10)
 
-        tk.Label(self, text="Criterio de búsqueda: ").pack()
         criterio_var = tk.StringVar(self)
         criterio_var.set("precio")
-        criterio_menu = tk.OptionMenu(self, criterio_var, "precio", "género", "autor", "rango de páginas", "nombre")
+        criterio_menu = tk.OptionMenu(self, criterio_var, "precio", "género", "autor", "paginas", "nombre")
         criterio_menu.pack()
 
-        valor_entry = tk.Entry(self)
-        valor_entry.pack()
+        self.dropdown_frame = tk.Frame(self)
 
-        valor_max_entry = tk.Entry(self)
-        valor_max_entry.pack()
+        def update_dropdowns(criterio):
+            # Limpiar los dropdowns existentes
+            for widget in self.dropdown_frame.winfo_children():
+                widget.destroy()
+
+            if criterio == "precio":
+                precios = ["Menos de 100.000", "100.000 - 200.000", "200.000 - 300.000", "Más de 300.000"]
+                precio_var = tk.StringVar(self)
+                precio_var.set(precios[0])
+                precio_menu = tk.OptionMenu(self.dropdown_frame, precio_var, *precios)
+                precio_menu.pack()
+            elif criterio == "genero":
+                # Lista de géneros disponibles
+                genero_options = ["Ficción", "Acción", "Misterio", "Romance", "Ciencia ficción", "Fantasía", "Aventura",
+                                  "Comedia", "Terror", "Drama", "Suspenso"]
+                # Crear y mostrar dropdown para géneros
+                genero_var = tk.StringVar(self)
+                genero_var.set(genero_options[0])
+                genero_menu = tk.OptionMenu(self.dropdown_frame, genero_var, *genero_options)
+                genero_menu.pack()
+            elif criterio == "autor":
+                autores = list(set([obra.autor.nombre for obra in self.biblioteca.obras]))
+                autor_var = tk.StringVar(self)
+                autor_var.set(autores[0])
+                autor_menu = tk.OptionMenu(self.dropdown_frame, autor_var, *autores)
+                autor_menu.pack()
+            elif criterio == "paginas":
+                rangos_paginas = ["Menos de 50", "50 - 100", "100 - 150", "Más de 150"]
+                paginas_var = tk.StringVar(self)
+                paginas_var.set(rangos_paginas[0])
+                paginas_menu = tk.OptionMenu(self.dropdown_frame, paginas_var, *rangos_paginas)
+                paginas_menu.pack()
+            elif criterio == "nombre":
+                nombres_obras = [obra.nombre for obra in self.biblioteca.obras]
+                nombre_var = tk.StringVar(self)
+                nombre_var.set(nombres_obras[0])
+                nombre_menu = tk.OptionMenu(self.dropdown_frame, nombre_var, *nombres_obras)
+                nombre_menu.pack()
+
+            self.dropdown_frame.pack(pady=10)
+
+        update_dropdowns("precio")
+
+        def criterio_changed(*args):
+            criterio = criterio_var.get()
+            update_dropdowns(criterio)
+
+        criterio_var.trace("w", criterio_changed)
 
         def buscar():
             criterio = criterio_var.get()
-            valor = valor_entry.get()
-            valor_max = valor_max_entry.get()
-            if criterio == "rango de páginas":
-                valor = int(valor)
-                valor_max = int(valor_max)
-            else:
-                valor = valor_entry.get()
-            obras_encontradas = self.biblioteca.buscar_obras(criterio, valor, valor_max)
+            valor = None
+            if criterio == "precio":
+                valor = precio_var.get()
+            elif criterio == "genero":
+                valor = genero_var.get()
+            elif criterio == "autor":
+                valor = autor_var.get()
+            elif criterio == "paginas":
+                valor = paginas_var.get()
+            elif criterio == "nombre":
+                valor = nombre_var.get()
+
+            obras_encontradas = self.biblioteca.buscar_obras(criterio, valor)
+
             if obras_encontradas:
                 messagebox.showinfo("Obras Encontradas", "\n".join([str(obra) for obra in obras_encontradas]))
             else:
                 messagebox.showinfo("Obras Encontradas", "No se encontraron obras que coincidan con la búsqueda.")
-            self.menu_principal()
 
         tk.Button(self, text="Buscar", command=buscar).pack(pady=10)
-
+        tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
     def calificar_obra(self):
         self.clear_window()
 
@@ -218,6 +270,7 @@ class BibliotecaApp(tk.Tk):
                                      "Por favor, asegúrate de ingresar números enteros en los campos correspondientes.")
 
         tk.Button(self, text="Agregar", command=agregar).pack(pady=10)
+        tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
 
     def eliminar_obra(self):
         self.clear_window()
@@ -235,6 +288,7 @@ class BibliotecaApp(tk.Tk):
             self.menu_principal()
 
         tk.Button(self, text="Eliminar", command=eliminar).pack(pady=10)
+        tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
 
     def modificar_obra(self):
         self.clear_window()
@@ -254,6 +308,7 @@ class BibliotecaApp(tk.Tk):
             self.menu_principal()
 
         tk.Button(self, text="Modificar", command=modificar).pack(pady=10)
+        tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
 
     def ver_obras_agregadas(self):
         self.clear_window()
@@ -297,7 +352,7 @@ class BibliotecaApp(tk.Tk):
             self.menu_principal()
 
         tk.Button(self, text="Agregar", command=agregar).pack(pady=10)
-
+        tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
     def eliminar_usuario(self):
         self.clear_window()
 
@@ -314,7 +369,7 @@ class BibliotecaApp(tk.Tk):
             self.menu_principal()
 
         tk.Button(self, text="Eliminar", command=eliminar).pack(pady=10)
-
+        tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
     def ver_correos_registrados(self):
         self.clear_window()
 
