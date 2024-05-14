@@ -1,3 +1,6 @@
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -107,22 +110,37 @@ class Biblioteca:
                 usuario_encontrado.libros_prestados += 1
 
     def calificar_obra(self, calificacion: float):
-        """Califica una obra."""
         if 0 <= calificacion <= 10:
             Obra.calificacion_total += calificacion
             Obra.calificaciones_count += 1
 
     def calcular_promedio_calificacion(self) -> float:
-        """Calcula el promedio de calificación de la obra."""
         if Obra.calificaciones_count > 0:
             return Obra.calificacion_total / Obra.calificaciones_count
         else:
             return 0.0
+
+    def notificaiones(self, destinatario: str, asunto: str, mensaje: str):
+        message = Mail(
+            from_email='bibliotecajdpython@gmail.com',
+            to_emails=destinatario,
+            subject=asunto,
+            plain_text_content=mensaje)
+
+        try:
+            sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+        except Exception as e:
+            print(str(e))
+
 
     def agregar_obras_predeterminadas(self):
 
         obra1 = (Biblioteca, 1, "El principito", 120, "Saint_Exupery", "Ficción", 120000, 3)
         obra2 = (Biblioteca, 2, "El priipito", 120, "Saint_Exupery", "Ficción", 120000, 3)
 
-        self.agregar_obra(obra1)
-        self.agregar_obra(obra2)
+        self.obras.append(obra1)
+        self.obras.append(obra2)

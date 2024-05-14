@@ -1,6 +1,12 @@
+import ssl
+
+
 from biblioteca.model.autor import Autor
 from biblioteca.model.biblioteca import Biblioteca
 
+ssl._create_default_https_context = ssl._create_unverified_context
+prueba = Biblioteca()
+prueba.notificaiones("juanpablo3011059@gmail.com", "Prueba Notificaciones", "Hola Juan ;)")
 
 
 print("------------")
@@ -11,6 +17,7 @@ print("Mas adelante agregaremos nuevos servicios.")
 print("------------------------------------------\n")
 
 biblioteca = Biblioteca()
+
 opcion = 1
 while opcion != 0:
     print("=INGRESE EL SERVICIO QUE DESEA UTILIZAR=\n")
@@ -75,7 +82,8 @@ while opcion != 0:
 
             elif opcion_ao == 4:
                 print("Obras en Catálogo:", biblioteca.ver_obras_agregadas())
-                biblioteca.ver_obras_agregadas()
+                str = biblioteca.ver_obras_agregadas()
+                print(str)
 
             else:
                 print("-Ingrese una opcion correcta-")
@@ -107,10 +115,8 @@ while opcion != 0:
 
             if opcion_au == 3:
                 print("Correos Agregados:")
-                biblioteca.ver_correos_agregados()
-
-            else:
-                print("-Ingrese una opcion correcta")
+                str = biblioteca.ver_correos_agregados()
+                print(str)
 
     elif opcion == 3:
         print("Para prestar un libro necesitamos saber la siguiente informacion")
@@ -137,7 +143,6 @@ while opcion != 0:
         else:
             print("Opción no válida")
             continue
-
         if criterio == 4:
             valor_max = int(input("Ingrese el valor máximo del rango de páginas: "))
             obras_encontradas = biblioteca.buscar_obras(biblioteca.obras, "paginas", (valor, valor_max))
