@@ -19,8 +19,6 @@ class BibliotecaApp(tk.Tk):
         self.configure(bg="#FFFFFF")
         self.menu_principal()
 
-
-
     def menu_principal(self):
         self.clear_window()
 
@@ -179,6 +177,7 @@ class BibliotecaApp(tk.Tk):
 
         tk.Button(self, text="Buscar", command=buscar).pack(pady=10)
         tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
+
     def calificar_obra(self):
         self.clear_window()
 
@@ -352,6 +351,7 @@ class BibliotecaApp(tk.Tk):
 
         tk.Button(self, text="Agregar", command=agregar).pack(pady=10)
         tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
+
     def eliminar_usuario(self):
         self.clear_window()
 
@@ -369,6 +369,7 @@ class BibliotecaApp(tk.Tk):
 
         tk.Button(self, text="Eliminar", command=eliminar).pack(pady=10)
         tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
+
     def ver_correos_registrados(self):
         self.clear_window()
 
@@ -383,6 +384,7 @@ class BibliotecaApp(tk.Tk):
     def clear_window(self):
         for widget in self.winfo_children():
             widget.destroy()
+
 
 if __name__ == "__main__":
     app = BibliotecaApp()

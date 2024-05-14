@@ -1,5 +1,5 @@
 import os
-from sendgrid import SendGridAPIClient
+from sendgrid.sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from dataclasses import dataclass, field
 from typing import Any
@@ -7,6 +7,7 @@ from typing import Any
 from biblioteca.model.autor import Autor
 from biblioteca.model.obra import Obra
 from biblioteca.model.usuario import Usuario
+
 
 @dataclass
 class Biblioteca:
@@ -65,7 +66,6 @@ class Biblioteca:
         return str
 
     def buscar_obras(self, criterio: str, valor: Any) -> list[Obra]:
-        """Busca obras por diferentes criterios."""
         result = []
         if criterio == "precio":
             if valor == "Menos de 100.000":
@@ -135,12 +135,3 @@ class Biblioteca:
             print(response.headers)
         except Exception as e:
             print(str(e))
-
-
-    def agregar_obras_predeterminadas(self):
-
-        obra1 = (Biblioteca, 1, "El principito", 120, "Saint_Exupery", "Ficción", 120000, 3)
-        obra2 = (Biblioteca, 2, "El priipito", 120, "Saint_Exupery", "Ficción", 120000, 3)
-
-        self.obras.append(obra1)
-        self.obras.append(obra2)

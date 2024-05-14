@@ -21,11 +21,3 @@ class Obra:
         if isinstance(other, Obra):
             return self.id == other.id
         return False
-
-
-class ObraError(Exception):
-    pass
-
-
-class EliminarObraError(ObraError):
-    pass
