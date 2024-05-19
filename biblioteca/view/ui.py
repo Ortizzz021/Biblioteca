@@ -4,8 +4,9 @@ from tkinter import messagebox
 from biblioteca.model.autor import Autor
 from biblioteca.model.biblioteca import Biblioteca
 
-
 biblioteca1 = Biblioteca()
+
+
 class BibliotecaApp(tk.Tk):
     title_font = ("Arial", 18)
     label_font = ("Arial", 12)
@@ -206,6 +207,7 @@ class BibliotecaApp(tk.Tk):
                 messagebox.showerror("Error", "No se encontró la obra seleccionada.")
 
         tk.Button(self, text="Calificar", command=calificar).pack(pady=10)
+        tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
 
         promedio_calificacion = biblioteca1.calcular_promedio_calificacion()
         tk.Label(self, text=f"Promedio de Calificación: {promedio_calificacion:.2f}").pack()
@@ -293,17 +295,61 @@ class BibliotecaApp(tk.Tk):
 
         tk.Label(self, text="Modificar Obra", font=("Arial", 16)).pack(pady=10)
 
-        tk.Label(self, text="ID de la obra a modificar: ").pack()
-        id_entry = tk.Entry(self)
-        id_entry.pack()
+        # Lista desplegable para seleccionar la obra a modificar
+        obra_var = tk.StringVar(self)
+        obras_agregadas = [obra.nombre for obra in biblioteca1.obras]
+        obra_var.set(obras_agregadas[0])  # Opción por defecto
+        obra_menu = tk.OptionMenu(self, obra_var, *obras_agregadas)
+        obra_menu.pack(pady=5)
 
         tk.Label(self, text="Selecciona qué deseas modificar: ").pack()
 
+        # Lista desplegable para las opciones de modificación
+        mod_options = tk.StringVar(self)
+        mod_options.set("Precio")  # Opción por defecto
+        mod_menu = tk.OptionMenu(self, mod_options, "Precio", "Cantidad de libros")
+        mod_menu.pack()
+
+        # Frame para opciones específicas
+        specific_frame = tk.Frame(self)
+
+        def update_specific_frame(option):
+            nonlocal specific_frame
+            specific_frame.destroy()
+            specific_frame = tk.Frame(self)
+            if option == "Precio":
+                tk.Label(specific_frame, text="Nuevo precio: ").pack()
+                specific_frame.new_value_entry = tk.Entry(specific_frame)
+                specific_frame.new_value_entry.pack()
+            elif option == "Cantidad de libros":
+                tk.Label(specific_frame, text="Nueva cantidad de libros: ").pack()
+                specific_frame.new_value_entry = tk.Entry(specific_frame)
+                specific_frame.new_value_entry.pack()
+            specific_frame.pack()
+
+        def on_option_change(*args):
+            update_specific_frame(mod_options.get())
+
+        mod_options.trace("w", on_option_change)
+
+        update_specific_frame("Precio")  # Por defecto, mostramos las opciones de modificación de precio
+
         def modificar():
-            id = int(id_entry.get())
-            biblioteca1.m_precio(id, ...)
-            messagebox.showinfo("Éxito", "La obra ha sido modificada correctamente.")
-            self.menu_principal()
+            obra_seleccionada = obra_var.get()
+            obra = next((obra for obra in biblioteca1.obras if obra.nombre == obra_seleccionada), None)
+            if obra:
+                option = mod_options.get()
+                new_value = specific_frame.new_value_entry.get()
+                if option == "Precio":
+                    new_value = int(new_value)
+                    biblioteca1.m_precio(obra.id, new_value)
+                elif option == "Cantidad de libros":
+                    new_value = int(new_value)
+                    biblioteca1.m_cantidad_libros(obra.id, new_value)
+                messagebox.showinfo("Éxito", "La obra ha sido modificada correctamente.")
+                self.menu_principal()
+            else:
+                messagebox.showerror("Error", "No se encontró la obra seleccionada.")
 
         tk.Button(self, text="Modificar", command=modificar).pack(pady=10)
         tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
@@ -315,7 +361,7 @@ class BibliotecaApp(tk.Tk):
 
         obras = biblioteca1.obras
         for obra in obras:
-            tk.Label(self, text=f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}").pack()
+            tk.Label(self, text=f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}, Prestado:, Precio: {obra.precio}, Cantidad: {obra.cant_libros}").pack()
 
         tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
 
@@ -389,3 +435,4 @@ class BibliotecaApp(tk.Tk):
 if __name__ == "__main__":
     app = BibliotecaApp()
     app.mainloop()
+
