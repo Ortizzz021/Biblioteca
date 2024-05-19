@@ -107,7 +107,6 @@ class BibliotecaApp(tk.Tk):
         self.dropdown_frame = tk.Frame(self)
 
         def update_dropdowns(criterio):
-            # Limpiar los dropdowns existentes
             for widget in self.dropdown_frame.winfo_children():
                 widget.destroy()
 
@@ -118,10 +117,8 @@ class BibliotecaApp(tk.Tk):
                 precio_menu = tk.OptionMenu(self.dropdown_frame, precio_var, *precios)
                 precio_menu.pack()
             elif criterio == "genero":
-                # Lista de géneros disponibles
                 genero_options = ["Ficción", "Acción", "Misterio", "Romance", "Ciencia ficción", "Fantasía", "Aventura",
                                   "Comedia", "Terror", "Drama", "Suspenso"]
-                # Crear y mostrar dropdown para géneros
                 genero_var = tk.StringVar(self)
                 genero_var.set(genero_options[0])
                 genero_menu = tk.OptionMenu(self.dropdown_frame, genero_var, *genero_options)
@@ -295,22 +292,18 @@ class BibliotecaApp(tk.Tk):
 
         tk.Label(self, text="Modificar Obra", font=("Arial", 16)).pack(pady=10)
 
-        # Lista desplegable para seleccionar la obra a modificar
         obra_var = tk.StringVar(self)
         obras_agregadas = [obra.nombre for obra in biblioteca1.obras]
-        obra_var.set(obras_agregadas[0])  # Opción por defecto
+        obra_var.set(obras_agregadas[0])
         obra_menu = tk.OptionMenu(self, obra_var, *obras_agregadas)
         obra_menu.pack(pady=5)
 
         tk.Label(self, text="Selecciona qué deseas modificar: ").pack()
 
-        # Lista desplegable para las opciones de modificación
         mod_options = tk.StringVar(self)
-        mod_options.set("Precio")  # Opción por defecto
+        mod_options.set("Precio")
         mod_menu = tk.OptionMenu(self, mod_options, "Precio", "Cantidad de libros")
         mod_menu.pack()
-
-        # Frame para opciones específicas
         specific_frame = tk.Frame(self)
 
         def update_specific_frame(option):
@@ -332,7 +325,7 @@ class BibliotecaApp(tk.Tk):
 
         mod_options.trace("w", on_option_change)
 
-        update_specific_frame("Precio")  # Por defecto, mostramos las opciones de modificación de precio
+        update_specific_frame("Precio")
 
         def modificar():
             obra_seleccionada = obra_var.get()
