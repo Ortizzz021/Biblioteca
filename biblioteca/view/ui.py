@@ -3,8 +3,12 @@ from tkinter import messagebox
 
 from biblioteca.model.autor import Autor
 from biblioteca.model.biblioteca import Biblioteca
+from biblioteca.model.gestion_humana import GestionHumana
+from biblioteca.model.gestion_obras import GestionObras
 
 biblioteca1 = Biblioteca()
+gestion_humana = GestionHumana()
+gestion_obras = GestionObras()
 
 
 class BibliotecaApp(tk.Tk):
@@ -66,13 +70,13 @@ class BibliotecaApp(tk.Tk):
 
         tk.Label(self, text="Seleccione el usuario: ").pack()
         usuario_var = tk.StringVar(self)
-        usuarios_registrados = [usuario.nombre for usuario in biblioteca1.usuarios]
+        usuarios_registrados = [usuario.nombre for usuario in gestion_humana.usuarios]
         usuario_menu = tk.OptionMenu(self, usuario_var, *usuarios_registrados)
         usuario_menu.pack()
 
         tk.Label(self, text="Seleccione la obra disponible: ").pack()
         obra_var = tk.StringVar(self)
-        obras_disponibles = [obra.nombre for obra in biblioteca1.obras if obra.disponible]
+        obras_disponibles = [obra.nombre for obra in gestion_obras.obras if obra.disponible]
         obra_menu = tk.OptionMenu(self, obra_var, *obras_disponibles)
         obra_menu.pack()
 
@@ -80,9 +84,9 @@ class BibliotecaApp(tk.Tk):
             usuario_seleccionado = usuario_var.get()
             obra_seleccionada = obra_var.get()
 
-            usuario = next((usuario for usuario in biblioteca1.usuarios if usuario.nombre == usuario_seleccionado),
+            usuario = next((usuario for usuario in gestion_humana.usuarios if usuario.nombre == usuario_seleccionado),
                            None)
-            obra = next((obra for obra in biblioteca1.obras if obra.nombre == obra_seleccionada), None)
+            obra = next((obra for obra in gestion_obras.obras if obra.nombre == obra_seleccionada), None)
 
             if usuario is not None and obra is not None:
                 biblioteca1.prestar_libro(usuario.documento, obra.id)
@@ -124,7 +128,7 @@ class BibliotecaApp(tk.Tk):
                 genero_menu = tk.OptionMenu(self.dropdown_frame, genero_var, *genero_options)
                 genero_menu.pack()
             elif criterio == "autor":
-                autores = list(set([obra.autor.nombre for obra in biblioteca1.obras]))
+                autores = list(set([obra.autor.nombre for obra in gestion_obras.obras]))
                 autor_var = tk.StringVar(self)
                 autor_var.set(autores[0])
                 autor_menu = tk.OptionMenu(self.dropdown_frame, autor_var, *autores)
@@ -136,7 +140,7 @@ class BibliotecaApp(tk.Tk):
                 paginas_menu = tk.OptionMenu(self.dropdown_frame, paginas_var, *rangos_paginas)
                 paginas_menu.pack()
             elif criterio == "nombre":
-                nombres_obras = [obra.nombre for obra in biblioteca1.obras]
+                nombres_obras = [obra.nombre for obra in gestion_obras.obras]
                 nombre_var = tk.StringVar(self)
                 nombre_var.set(nombres_obras[0])
                 nombre_menu = tk.OptionMenu(self.dropdown_frame, nombre_var, *nombres_obras)
@@ -182,7 +186,7 @@ class BibliotecaApp(tk.Tk):
         tk.Label(self, text="Calificar Obra", font=("Arial", 16)).pack(pady=10)
 
         obra_var = tk.StringVar(self)
-        obras_agregadas = [obra.nombre for obra in biblioteca1.obras]
+        obras_agregadas = [obra.nombre for obra in gestion_obras.obras]
         obra_menu = tk.OptionMenu(self, obra_var, *obras_agregadas)
         obra_menu.pack(pady=5)
 
@@ -194,7 +198,7 @@ class BibliotecaApp(tk.Tk):
             obra_seleccionada = obra_var.get()
             puntaje = float(puntaje_entry.get())
 
-            obra = next((obra for obra in biblioteca1.obras if obra.nombre == obra_seleccionada), None)
+            obra = next((obra for obra in gestion_obras.obras if obra.nombre == obra_seleccionada), None)
 
             if obra:
                 biblioteca1.calificar_obra(puntaje)
@@ -259,7 +263,7 @@ class BibliotecaApp(tk.Tk):
                 genero = genero_var.get()
                 precio = int(precio_entry.get())
                 cant_libros = int(cant_libros_entry.get())
-                biblioteca1.agregar_obra(id, nombre, paginas, autor, genero, precio, cant_libros)
+                gestion_obras.agregar_obra(id, nombre, paginas, autor, genero, precio, cant_libros)
                 messagebox.showinfo("Éxito", "La obra ha sido agregada correctamente.")
                 self.menu_principal()
             except ValueError:
@@ -280,7 +284,7 @@ class BibliotecaApp(tk.Tk):
 
         def eliminar():
             id = int(id_entry.get())
-            biblioteca1.eliminar_obra(id)
+            gestion_obras.eliminar_obra(id)
             messagebox.showinfo("Éxito", "La obra ha sido eliminada correctamente.")
             self.menu_principal()
 
@@ -293,7 +297,7 @@ class BibliotecaApp(tk.Tk):
         tk.Label(self, text="Modificar Obra", font=("Arial", 16)).pack(pady=10)
 
         obra_var = tk.StringVar(self)
-        obras_agregadas = [obra.nombre for obra in biblioteca1.obras]
+        obras_agregadas = [obra.nombre for obra in gestion_obras.obras]
         obra_var.set(obras_agregadas[0])
         obra_menu = tk.OptionMenu(self, obra_var, *obras_agregadas)
         obra_menu.pack(pady=5)
@@ -329,16 +333,16 @@ class BibliotecaApp(tk.Tk):
 
         def modificar():
             obra_seleccionada = obra_var.get()
-            obra = next((obra for obra in biblioteca1.obras if obra.nombre == obra_seleccionada), None)
+            obra = next((obra for obra in gestion_obras.obras if obra.nombre == obra_seleccionada), None)
             if obra:
                 option = mod_options.get()
                 new_value = specific_frame.new_value_entry.get()
                 if option == "Precio":
                     new_value = int(new_value)
-                    biblioteca1.m_precio(obra.id, new_value)
+                    gestion_obras.m_precio(obra.id, new_value)
                 elif option == "Cantidad de libros":
                     new_value = int(new_value)
-                    biblioteca1.m_cantidad_libros(obra.id, new_value)
+                    gestion_obras.m_cantidad_libros(obra.id, new_value)
                 messagebox.showinfo("Éxito", "La obra ha sido modificada correctamente.")
                 self.menu_principal()
             else:
@@ -352,9 +356,10 @@ class BibliotecaApp(tk.Tk):
 
         tk.Label(self, text="Obras Agregadas", font=("Arial", 16)).pack(pady=10)
 
-        obras = biblioteca1.obras
+        obras = gestion_obras.obras
         for obra in obras:
-            tk.Label(self, text=f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}, Prestado:, Precio: {obra.precio}, Cantidad: {obra.cant_libros}").pack()
+            tk.Label(self,
+                     text=f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}, Prestado:, Precio: {obra.precio}, Cantidad: {obra.cant_libros}").pack()
 
         tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
 
@@ -384,7 +389,7 @@ class BibliotecaApp(tk.Tk):
             nombre = nombre_entry.get()
             telefono = telefono_entry.get()
             correo = correo_entry.get()
-            biblioteca1.agregar_usuario(documento, nombre, telefono, correo)
+            gestion_humana.agregar_usuario(documento, nombre, telefono, correo)
             messagebox.showinfo("Éxito", "El usuario ha sido agregado correctamente.")
             self.menu_principal()
 
@@ -402,7 +407,7 @@ class BibliotecaApp(tk.Tk):
 
         def eliminar():
             documento = documento_entry.get()
-            biblioteca1.eliminar_usuario(documento)
+            gestion_humana.eliminar_usuario(documento)
             messagebox.showinfo("Éxito", "El usuario ha sido eliminado correctamente.")
             self.menu_principal()
 
@@ -414,7 +419,7 @@ class BibliotecaApp(tk.Tk):
 
         tk.Label(self, text="Correos Registrados", font=("Arial", 16)).pack(pady=10)
 
-        usuarios = biblioteca1.usuarios
+        usuarios = gestion_humana.usuarios
         for usuario in usuarios:
             tk.Label(self, text=f"Nombre: {usuario.nombre}, Correo: {usuario.correo}").pack()
 
@@ -428,4 +433,3 @@ class BibliotecaApp(tk.Tk):
 if __name__ == "__main__":
     app = BibliotecaApp()
     app.mainloop()
-
