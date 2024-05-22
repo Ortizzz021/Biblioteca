@@ -12,10 +12,11 @@ class Obra:
     genero: str
     precio: int
     cant_libros: int
-    calificacion: str = field(init=False)
+    usuario_prestamo: str = field(init=False, default="")
     disponible: bool = field(init=False, default=True)
     calificacion_total: float = field(default=0.0)
     calificaciones_count: int = field(default=0)
+
 
     def __eq__(self, other):
         if isinstance(other, Obra):

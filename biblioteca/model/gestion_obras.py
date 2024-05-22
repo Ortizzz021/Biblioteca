@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from biblioteca.model import Autor
+from biblioteca.model.autor import Autor
 from biblioteca.model.gestion_humana import GestionHumana
 from biblioteca.model.obra import Obra
 

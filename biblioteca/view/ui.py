@@ -20,7 +20,8 @@ class BibliotecaApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Aplicación de Biblioteca")
-        self.geometry("600x400")
+        self.geometry("600x500")
+        self.resizable(width=False, height=False)
         self.configure(bg="#FFFFFF")
         self.menu_principal()
 
@@ -110,38 +111,38 @@ class BibliotecaApp(tk.Tk):
 
         self.dropdown_frame = tk.Frame(self)
 
+        precio_var = tk.StringVar(self)
+        genero_var = tk.StringVar(self)
+        autor_var = tk.StringVar(self)
+        paginas_var = tk.StringVar(self)
+        nombre_var = tk.StringVar(self)
         def update_dropdowns(criterio):
             for widget in self.dropdown_frame.winfo_children():
                 widget.destroy()
 
             if criterio == "precio":
                 precios = ["Menos de 100.000", "100.000 - 200.000", "200.000 - 300.000", "Más de 300.000"]
-                precio_var = tk.StringVar(self)
                 precio_var.set(precios[0])
                 precio_menu = tk.OptionMenu(self.dropdown_frame, precio_var, *precios)
                 precio_menu.pack()
             elif criterio == "genero":
                 genero_options = ["Ficción", "Acción", "Misterio", "Romance", "Ciencia ficción", "Fantasía", "Aventura",
                                   "Comedia", "Terror", "Drama", "Suspenso"]
-                genero_var = tk.StringVar(self)
                 genero_var.set(genero_options[0])
                 genero_menu = tk.OptionMenu(self.dropdown_frame, genero_var, *genero_options)
                 genero_menu.pack()
             elif criterio == "autor":
                 autores = list(set([obra.autor.nombre for obra in gestion_obras.obras]))
-                autor_var = tk.StringVar(self)
                 autor_var.set(autores[0])
                 autor_menu = tk.OptionMenu(self.dropdown_frame, autor_var, *autores)
                 autor_menu.pack()
             elif criterio == "paginas":
                 rangos_paginas = ["Menos de 50", "50 - 100", "100 - 150", "Más de 150"]
-                paginas_var = tk.StringVar(self)
                 paginas_var.set(rangos_paginas[0])
                 paginas_menu = tk.OptionMenu(self.dropdown_frame, paginas_var, *rangos_paginas)
                 paginas_menu.pack()
             elif criterio == "nombre":
                 nombres_obras = [obra.nombre for obra in gestion_obras.obras]
-                nombre_var = tk.StringVar(self)
                 nombre_var.set(nombres_obras[0])
                 nombre_menu = tk.OptionMenu(self.dropdown_frame, nombre_var, *nombres_obras)
                 nombre_menu.pack()
@@ -359,7 +360,7 @@ class BibliotecaApp(tk.Tk):
         obras = gestion_obras.obras
         for obra in obras:
             tk.Label(self,
-                     text=f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}, Prestado:, Precio: {obra.precio}, Cantidad: {obra.cant_libros}").pack()
+                     text=f"ID: {obra.id}, Nombre: {obra.nombre}, Autor: {obra.autor.nombre}, Precio: {obra.precio}, Cantidad: {obra.cant_libros}").pack()
 
         tk.Button(self, text="Regresar", command=self.menu_principal).pack(pady=10)
 
