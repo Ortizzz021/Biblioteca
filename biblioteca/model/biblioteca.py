@@ -2,7 +2,7 @@ import smtplib
 import ssl
 from email.message import EmailMessage
 
-from biblioteca.model import Autor
+from biblioteca.model.autor import Autor
 from biblioteca.model.gestion_humana import GestionHumana
 from biblioteca.model.gestion_obras import GestionObras
 from biblioteca.model.obra import Obra

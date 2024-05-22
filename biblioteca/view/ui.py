@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox
 
+import pywhatkit
+
+from biblioteca.model import usuario
 from biblioteca.model.autor import Autor
 from biblioteca.model.biblioteca import Biblioteca
 from biblioteca.model.gestion_humana import GestionHumana
@@ -92,6 +95,7 @@ class BibliotecaApp(tk.Tk):
             if usuario is not None and obra is not None:
                 biblioteca1.prestar_libro(usuario.documento, obra.id)
                 messagebox.showinfo("Éxito", "El libro ha sido prestado correctamente.")
+                pywhatkit.send_mail("bibliotecajdpython@gmail.com", "pqtu yadm anpv iiqf", "¡Felicitaciones!",f"Libro {obra.nombre} prestado correctamente, que lo disfrutes", usuario.correo)
                 self.menu_principal()
             else:
                 messagebox.showerror("Error", "Por favor, selecciona un usuario y una obra válidos.")
@@ -390,6 +394,7 @@ class BibliotecaApp(tk.Tk):
             nombre = nombre_entry.get()
             telefono = telefono_entry.get()
             correo = correo_entry.get()
+            pywhatkit.send_mail("bibliotecajdpython@gmail.com", "pqtu yadm anpv iiqf", "¡BIENVENIDO!", "Su registro ha sido exitoso", correo)
             gestion_humana.agregar_usuario(documento, nombre, telefono, correo)
             messagebox.showinfo("Éxito", "El usuario ha sido agregado correctamente.")
             self.menu_principal()
