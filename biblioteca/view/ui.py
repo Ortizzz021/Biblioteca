@@ -202,7 +202,7 @@ class BibliotecaApp(tk.Tk):
             obra = next((obra for obra in gestion_obras.obras if obra.nombre == obra_seleccionada), None)
 
             if obra:
-                biblioteca1.calificar_obra(puntaje)
+                biblioteca1.calificar_obra(obra.id, puntaje)
                 messagebox.showinfo("Éxito", "La obra ha sido calificada correctamente.")
                 self.menu_principal()
             else:
@@ -429,8 +429,3 @@ class BibliotecaApp(tk.Tk):
     def clear_window(self):
         for widget in self.winfo_children():
             widget.destroy()
-
-
-if __name__ == "__main__":
-    app = BibliotecaApp()
-    app.mainloop()

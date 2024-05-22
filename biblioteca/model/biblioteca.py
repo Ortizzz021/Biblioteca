@@ -1,17 +1,17 @@
-from dataclasses import dataclass
-from typing import Any
-
+from biblioteca.model import Autor
 from biblioteca.model.gestion_humana import GestionHumana
 from biblioteca.model.gestion_obras import GestionObras
 from biblioteca.model.obra import Obra
 
 
-@dataclass
 class Biblioteca:
     def __init__(self):
-        self.gestion_obras = GestionObras()
+        self.gestion_obras: GestionObras = GestionObras()
+        self.gestion_humana: GestionHumana = GestionHumana()
+        self.obra: Obra = Obra(0, "", 0, Autor("", ""), "", 0, 0)
 
     def buscar_obras(self, criterio, valor):
+
         if criterio == "precio":
             result = [obra for obra in self.gestion_obras.obras if 100000 <= obra.precio < 200000]
         elif criterio == "genero":
@@ -27,16 +27,15 @@ class Biblioteca:
 
         return result
 
-
     def prestar_libro(self, documento: str, id_libro: int):
         usuario_encontrado = None
-        for usuario in GestionHumana().usuarios:
+        for usuario in self.gestion_humana.usuarios:
             if usuario.documento == documento:
                 usuario_encontrado = usuario
                 break
 
         obra_encontrada = None
-        for obra in GestionObras().obras:
+        for obra in self.gestion_obras.obras:
             if obra.id == id_libro:
                 obra_encontrada = obra
                 break
@@ -49,14 +48,14 @@ class Biblioteca:
 
     def calificar_obra(self, id_obra: int, calificacion: float):
         if 0 <= calificacion <= 10:
-            for obra in GestionObras().obras:
+            for obra in self.gestion_obras.obras:
                 if obra.id == id_obra:
                     obra.calificacion_total += calificacion
                     obra.calificaciones_count += 1
 
     def calcular_promedio_calificacion(self) -> float:
-        if Obra.calificaciones_count > 0:
-            return Obra.calificacion_total / Obra.calificaciones_count
+        if self.obra.calificaciones_count > 0:
+            return self.obra.calificacion_total / self.obra.calificaciones_count
         else:
             return 0.0
 
