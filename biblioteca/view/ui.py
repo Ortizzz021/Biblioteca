@@ -3,7 +3,6 @@ from tkinter import messagebox
 
 import pywhatkit
 
-from biblioteca.model import usuario
 from biblioteca.model.autor import Autor
 from biblioteca.model.biblioteca import Biblioteca
 from biblioteca.model.gestion_humana import GestionHumana
