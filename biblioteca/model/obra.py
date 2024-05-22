@@ -17,8 +17,3 @@ class Obra:
     calificacion_total: float = field(default=0.0)
     calificaciones_count: int = field(default=0)
 
-
-    def __eq__(self, other):
-        if isinstance(other, Obra):
-            return self.id == other.id
-        return False
